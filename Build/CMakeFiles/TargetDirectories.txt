@@ -1,0 +1,9 @@
+/home/alex/Documents/CPPLearningExtensive/Build/CMakeFiles/Catch.dir
+/home/alex/Documents/CPPLearningExtensive/Build/CMakeFiles/edit_cache.dir
+/home/alex/Documents/CPPLearningExtensive/Build/CMakeFiles/rebuild_cache.dir
+/home/alex/Documents/CPPLearningExtensive/Build/extern/Catch2/CMakeFiles/edit_cache.dir
+/home/alex/Documents/CPPLearningExtensive/Build/extern/Catch2/CMakeFiles/rebuild_cache.dir
+/home/alex/Documents/CPPLearningExtensive/Build/extern/Catch2/src/CMakeFiles/Catch2.dir
+/home/alex/Documents/CPPLearningExtensive/Build/extern/Catch2/src/CMakeFiles/Catch2WithMain.dir
+/home/alex/Documents/CPPLearningExtensive/Build/extern/Catch2/src/CMakeFiles/edit_cache.dir
+/home/alex/Documents/CPPLearningExtensive/Build/extern/Catch2/src/CMakeFiles/rebuild_cache.dir

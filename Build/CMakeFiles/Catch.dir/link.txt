@@ -1,0 +1,1 @@
+/run/current-system/sw/bin/c++ -Wl,--dependency-file=CMakeFiles/Catch.dir/link.d CMakeFiles/Catch.dir/catch.cpp.o -o Catch  extern/Catch2/src/libCatch2Main.a extern/Catch2/src/libCatch2.a
