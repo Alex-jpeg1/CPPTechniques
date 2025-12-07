@@ -6,7 +6,7 @@ set(INCLUDE_PATHS extern/Catch2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Catch catch.cpp Test/Tests.cpp)
+add_executable(Catch catch.cpp MATH/pow_custom.cpp Test/Tests.cpp)
 
 #target_include_directories(Catch PUBLIC ${INCLUDE_PATHS})
 
