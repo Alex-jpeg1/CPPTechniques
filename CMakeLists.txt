@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+Cmake_minimum_required(VERSION 3.20)
 
 project(Catch)
 
@@ -7,6 +7,8 @@ set(INCLUDE_PATHS extern/Catch2)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Catch catch.cpp MATH/pow_custom.cpp Test/Tests.cpp)
+
+target_compile_options(Catch PUBLIC -Wall -Wextra -Wpedantic)
 
 #target_include_directories(Catch PUBLIC ${INCLUDE_PATHS})
 
