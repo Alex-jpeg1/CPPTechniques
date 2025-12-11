@@ -61,8 +61,9 @@ class CustomGreater
    private:
       static inline bool __invoke(int _x, int _y)
       {
-         return CustomGreater{}.operator()(_x,_y);
+         return CustomGreater{}.operator()(_x, _y);
       }
+
 };
 
 //This will be similar to the std::greater<int> 
@@ -73,6 +74,31 @@ void TestFunction(void(*p_Func)())
 {
    p_Func();
 }*/
+namespace BooleanFunctors
+{
+   class SameValueChecker 
+   {
+      public:
+         SameValueChecker(){}
+         
+         inline bool operator()(int _x, int _y)
+         {
+            return _x == _y;
+         }
+
+         using returnType = bool(*)(int, int);
+         inline constexpr operator returnType() const noexcept
+         {
+            return __invoke;
+         }
+      private:
+         static inline bool __invoke(int _x, int _y)
+         {
+            return SameValueChecker{}.operator()(_x, _y);
+         }
+
+   };
+}
 namespace Custom
 {
    void swap(int& a,int& b)
@@ -101,6 +127,25 @@ namespace Custom
    //Functional sort algorithm specialized only for ints for the time being will be moved to template 
    //Takes a pointer to a comparison function
    //The algorithm used is not optimal for a sort function but it is used as an example to prove the core concept behind
+
+
+   std::vector<int>::iterator unique(std::vector<int>::iterator begin, std::vector<int>::iterator end, bool(*p_Func)(int,int) = BooleanFunctors::SameValueChecker{})
+   {
+      std::vector<int>::iterator currentPos = begin;
+      while(begin != end)
+      {
+         if(!p_Func(*currentPos, *begin) && ++currentPos != begin)
+            {
+               *currentPos = std::move(*begin);
+            }
+         begin++;
+      }
+      return ++currentPos;
+   }
+   //Functional unique function written for the std::vector<int>
+   //Gains a function of test but it will have a default
+   //Does not contain a BinaryPredicate as in the standard but will be implemented differently for one aswell
+   //For the time being it is enough to write it like this to visualize the algorithm behind
 }
 //A custom namespace to implement different functions from the standard library
 
@@ -152,7 +197,7 @@ int main()
                            std::vector<int> v(10);
                            for(int i=0;i<10;i++)
                            {
-                              v[i] = 100*i;
+                              v[i] = 100;
                            }
                            std::sort(v.begin(),v.end(),std::less<int>());
                            return v;
@@ -162,6 +207,11 @@ int main()
    Custom::sort(data.begin(),data.end(),CustomGreater());
    //call the sort function giving an object of the CustomGreater functor
    std::cout<<'\n';
+   constprintVector(data);
+   std::cout<<'\n';
+   std::cout<<Custom::unique(data.begin(),data.end()) - data.begin();
+   std::cout<<'\n';
+
    constprintVector(data);
    //This is an example of a workaround on a const value to be initialized with a more complex value
 }
