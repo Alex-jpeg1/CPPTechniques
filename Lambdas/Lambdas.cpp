@@ -194,11 +194,11 @@ int main()
    //TestFunction(Lambdapointer);
    auto data = []()
                         {
-                           std::vector<int> v(10);
-                           for(int i=0;i<10;i++)
-                           {
-                              v[i] = 100;
-                           }
+                           std::vector<int> v = {1,5,6,7,3,5,6,9,0};
+                           //for(int i=0;i<10;i++)
+                           //{
+                           //   v[i] = 100;
+                           //}
                            std::sort(v.begin(),v.end(),std::less<int>());
                            return v;
                         }();
@@ -209,10 +209,9 @@ int main()
    std::cout<<'\n';
    constprintVector(data);
    std::cout<<'\n';
-   std::cout<<Custom::unique(data.begin(),data.end()) - data.begin();
-   std::cout<<'\n';
-
+   data.erase(Custom::unique(data.begin(),data.end()),data.end());
    constprintVector(data);
-   //This is an example of a workaround on a const value to be initialized with a more complex value
+   //This for some reason prints the same number that was there
+   //Using c++17 and the g++ compiler
 }
 
