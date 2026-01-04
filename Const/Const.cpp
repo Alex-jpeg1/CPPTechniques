@@ -67,12 +67,22 @@ namespace constMemberFunctions
 
     Test(): text("ABCDEFG"){}
 
-    char& operator[](std::size_t indices) { std::cout<<"NON CONST CALL\n"; return text[indices]; }
+    char& operator[](std::size_t indices) 
+    { 
+        std::cout<<"NON CONST CALL\n"; 
+        return const_cast<char&>(
+                                static_cast<const Test&>(*this)[indices]
+                                );
+    } 
+    //Avoids duplicate return call
 
     const char& operator[](std::size_t indices) const {std::cout<<"CONST CALL\n"; return text[indices]; } 
 
-    const Test operator*(const Test& rhs) {std::cout<<"nonCONST OPERATOR*\n"; return *this;}
-    //void operator*(const Test& rhs) {std::cout<<"nonCONST OPERATOR*\n";}
+    const Test operator*(const Test& rhs) 
+    {
+        std::cout<<"nonCONST OPERATOR*\n"; 
+        return static_cast<const Test>(*this) * rhs;
+    }
     const Test operator*(const Test& rhs) const {std::cout<<"CONST OPERATOR*\n"; return *this;}
 
     const Test operator=(const Test& rhs) const {cout<<"Operator called"; return rhs;} //this allows assignment of a result from the operator*
@@ -92,13 +102,16 @@ namespace constMemberFunctions
 int main()
 {
     const constMemberFunctions::Test test1;
+    
     test1[1];
+    
     constMemberFunctions::Test test2;
+
     test2[2];
 
     test1*test2;
 
-    test2*test1 = test2; //this works because test2*test1 is a const and the = assignment operator is a const member function
+    test2*test1;
 
     // if(test2*test1 = test1)
     // {
