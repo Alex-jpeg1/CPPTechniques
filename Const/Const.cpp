@@ -71,8 +71,17 @@ namespace constMemberFunctions
 
     const char& operator[](std::size_t indices) const {std::cout<<"CONST CALL\n"; return text[indices]; } 
 
-    Test operator*(const Test& rhs) {std::cout<<"nonCONST OPERATOR*\n"; return rhs;}
-    const Test operator*(Test& rhs) const {std::cout<<"CONST OPERATOR*\n"; return rhs;}
+    const Test operator*(const Test& rhs) {std::cout<<"nonCONST OPERATOR*\n"; return *this;}
+    //void operator*(const Test& rhs) {std::cout<<"nonCONST OPERATOR*\n";}
+    const Test operator*(const Test& rhs) const {std::cout<<"CONST OPERATOR*\n"; return *this;}
+
+    const Test operator=(const Test& rhs) const {cout<<"Operator called"; return rhs;} //this allows assignment of a result from the operator*
+    const Test operator=(const Test& rhs) {cout<<"Operator called"; return rhs;} //this doens't allow assignment of a result from the operator*
+
+    // explicit operator bool() const
+    // {
+    //     return true;
+    // }
     private:
     std::string text;
     };
@@ -88,5 +97,11 @@ int main()
     test2[2];
 
     test1*test2;
-    test2*test1;
+
+    test2*test1 = test2; //this works because test2*test1 is a const and the = assignment operator is a const member function
+
+    // if(test2*test1 = test1)
+    // {
+    //     cout<<"Big problem";
+    // }
 }
