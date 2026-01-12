@@ -7,12 +7,18 @@ void foo(const char* const val )
 
 int main()
 {
-    char* c;
+    char c;
     
-    c = new char{'A'};
+    c='A';
 
-    foo(c);
+    foo(&c);
 
-    //This is more dangerous and has more chances of resulting in segfaul 
-    //It still is considered UB
+    std::cin>>c;
+
+    foo(&c);
+    //Same result in both cases 
+    //This is undefined Behaviour 
+    //foo should simply write the value in the terminal 
+    //This might return segfault as it writes the values byte by byte until it meets the \0 value and in our case the 
+    // value never apears it enters in unallocated zone
 }
