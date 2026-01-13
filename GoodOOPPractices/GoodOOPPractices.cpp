@@ -63,7 +63,29 @@ class Person:public LivingBeing, public UncopyableDeprecated
         std::string name;
         int age;
 };
+}
 
+namespace ImmovableObjectsDelete
+{
+class Immovable
+{
+    public:
+    Immovable() = default;
+    Immovable(Immovable&&) = delete;
+    void operator=(Immovable&&) = delete;
+    private:
+};
+
+class Person: public Immovable
+{
+    public:
+    private:
+};
+
+Person GetNewPerson()
+{
+    return Person{};
+}
 }
 int main()
 {
@@ -115,4 +137,20 @@ int main()
 
     //CopyOperatorTestPersonDeprecated = FirstPersonDeprecated; //Compilation error cannot call copy operator (private undefined)
 
+    ImmovableObjectsDelete::Immovable TestPersonMove = ImmovableObjectsDelete::Immovable{}; //This should call the move constructor but since c++17 it 
+                                                                                            //is transformed in a normal constructor call
+
+    //ImmovableObjectsDelete::Immovable TestPersonMove1 = std::move(ImmovableObjectsDelete::Immovable{}); //In this example i am explicitly casting it to an rvalue so it calls the move constructor 
+
+    //ImmovableObjectsDelete::Immovable TestPersonMove2 = static_cast<ImmovableObjectsDelete::Immovable &&>(ImmovableObjectsDelete::Immovable{}); //In this example i do not use the std::move i 
+                                                                                                                                                //cast it myself to an rvalue so i force the move constructor
+
+    ImmovableObjectsDelete::Person TestPersonMove3 = ImmovableObjectsDelete::GetNewPerson(); //This does not result in an error as it is directly constructed there so no move
+
+
+    //ImmovableObjectsDelete::Person TestPersonMove4 = std::move(ImmovableObjectsDelete::GetNewPerson()); //I again force the cast to &&
+    //ImmovableObjectsDelete::Person TestPersonMove5 = static_cast<ImmovableObjectsDelete::Person&&>(ImmovableObjectsDelete::GetNewPerson()); //Same Problem
+
+    //ImmovableObjectsDelete::Person TestPersonMove6 = reinterpret_cast<ImmovableObjectsDelete::Person&&>(ImmovableObjectsDelete::Person{}); //This creates an error due to the fact 
+                                                                                                                                            //reinterpret_cast needs a non prvalue addres to be able to create a reference 
 }
