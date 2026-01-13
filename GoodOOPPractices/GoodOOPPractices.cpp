@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-using namespace std;
 
 class TestCopyAssignmentOperator
 {
@@ -14,6 +13,58 @@ class TestCopyAssignmentOperator
 };
 
 
+class LivingBeing
+{
+    public:
+
+    private:
+        std::string Birthday;
+};
+
+namespace UncopyableObjectsModernWay
+{
+class UncopyableModern
+{
+    public:
+        UncopyableModern() = default;
+        UncopyableModern(const UncopyableModern&) = delete;
+        void operator=(const UncopyableModern&) = delete;
+    private:
+
+};
+//This is a base class for making an onject unable to copy
+
+class Person:public UncopyableModern, public LivingBeing
+{
+    public:
+
+    private:
+        std::string Name;
+        int Age;
+};
+}
+
+namespace UncopyableObjectsDeprecatedWay
+{
+class UncopyableDeprecated
+{
+    public:
+    UncopyableDeprecated() = default;
+    
+    private:
+    UncopyableDeprecated(const UncopyableDeprecated&);
+    void operator=(const UncopyableDeprecated&);
+};
+
+class Person:public LivingBeing, public UncopyableDeprecated
+{
+    public:
+    private:
+        std::string name;
+        int age;
+};
+
+}
 int main()
 {
     //int vexingParse(); //This can be interpreted as a function and creates ambiguity
@@ -39,10 +90,29 @@ int main()
     //This operator will not work and will raise a compilation error 
     //The reason for that is because the compiler cannot decide how to manage the reference 
     //References cannot be moved after initialization so this would bring ambiguity so the operator is deleted by default in this case
-    
+
     TestCopyAssignmentOperator Test1Val3(test1); 
 
     //In this case there is no error as the reference is automaticaly initialized with the value from test1
 
+    int copyOperatorcall1, copyOperatorcall2, copyOperatorcall3 = 100;
+
+    std::cout<<copyOperatorcall1<<" "<<copyOperatorcall2<<" "<<copyOperatorcall3<<'\n';
+
+    //copyOperatorcall1.operator=(copyOperatorcall2);
+
+    //An explicit call on the =operator on a primitive will result in a compilation error
+
+    UncopyableObjectsModernWay::Person FirstPerson;
+    //UncopyableObjectsModernWay::Person CopyCtorTestPerson(FirstPerson); //Compilation error cannot call copy ctor (deleted)
+    UncopyableObjectsModernWay::Person CopyOperatorTestPerson;
+
+    //CopyOperatorTestPerson = FirstPerson; //Compilation error cannot call copy operator (deleted)
+
+    UncopyableObjectsDeprecatedWay::Person FirstPersonDeprecated;
+    //UncopyableObjectsDeprecatedWay::Person CopyCtorTestPersonDeprecated(FirstPersonDeprecated); //Compilation error cannot call copy ctor (private undefined)
+    UncopyableObjectsDeprecatedWay::Person CopyOperatorTestPersonDeprecated;
+
+    //CopyOperatorTestPersonDeprecated = FirstPersonDeprecated; //Compilation error cannot call copy operator (private undefined)
 
 }
