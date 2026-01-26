@@ -13,6 +13,17 @@ class TestCopyAssignmentOperator
 };
 
 
+namespace Testnodiscard
+{
+    class TestNODISCARD
+    {
+        public:
+        [[nodiscard]] int Getter(){ return 1; }
+        [[nodiscard("Unused Value")]] int GetterMessage(){return 0;}
+        private:
+    };
+}
+
 class LivingBeing
 {
     public:
@@ -117,9 +128,9 @@ int main()
 
     //In this case there is no error as the reference is automaticaly initialized with the value from test1
 
-    int copyOperatorcall1, copyOperatorcall2, copyOperatorcall3 = 100;
+    //int copyOperatorcall1, copyOperatorcall2, copyOperatorcall3 = 100;
 
-    std::cout<<copyOperatorcall1<<" "<<copyOperatorcall2<<" "<<copyOperatorcall3<<'\n';
+    //std::cout<<copyOperatorcall1<<" "<<copyOperatorcall2<<" "<<copyOperatorcall3<<'\n';
 
     //copyOperatorcall1.operator=(copyOperatorcall2);
 
@@ -153,4 +164,8 @@ int main()
 
     //ImmovableObjectsDelete::Person TestPersonMove6 = reinterpret_cast<ImmovableObjectsDelete::Person&&>(ImmovableObjectsDelete::Person{}); //This creates an error due to the fact 
                                                                                                                                             //reinterpret_cast needs a non prvalue addres to be able to create a reference 
+    Testnodiscard::TestNODISCARD TestNODISCARD;
+
+    TestNODISCARD.Getter();
+    TestNODISCARD.GetterMessage();
 }
