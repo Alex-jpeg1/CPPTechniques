@@ -98,6 +98,48 @@ Person GetNewPerson()
     return Person{};
 }
 }
+
+namespace AssignmentOperator
+{
+    class Object
+    {
+        public:
+            explicit Object(int val):_val{val}{}
+            explicit Object(const Object& other){ _val = other._val; }
+            Object& operator=(const Object& other)
+            {
+                _val = other._val;
+                return *this; 
+            }
+            void AfiseazaValoare(){std::cout<<_val<<" ";}
+        private:
+            int _val;
+    };
+    class derivedObject:public Object
+    {
+        public:
+            explicit derivedObject(int val):Object{val},_derivedVal{val}{}
+            explicit derivedObject(derivedObject& other):Object(other),_derivedVal{other._derivedVal}{}
+            derivedObject& operator=(const derivedObject& other)
+            {
+                Object::operator=(other);
+                return  *this;
+            }
+        private:
+            int _derivedVal;
+    };
+}
+
+void AssignmentOperatorFunction()
+{
+    AssignmentOperator::derivedObject obj1 = AssignmentOperator::derivedObject(100);
+    AssignmentOperator::derivedObject obj2 = AssignmentOperator::derivedObject(200);
+
+    obj1.AfiseazaValoare();
+    obj1 = obj2;
+    obj1.AfiseazaValoare();
+
+}
 int main()
 {
     //int vexingParse(); //This can be interpreted as a function and creates ambiguity
@@ -168,4 +210,6 @@ int main()
 
     TestNODISCARD.Getter();
     TestNODISCARD.GetterMessage();
+    std::cout<<"Test operator call from derived\n";
+    AssignmentOperatorFunction();
 }
